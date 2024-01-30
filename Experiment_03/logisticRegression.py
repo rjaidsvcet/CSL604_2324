@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
 
 class LogisticRegression:
     def __init__ (self):
@@ -28,11 +30,22 @@ class LogisticRegression:
         return sigmoid, y_hat
 
 if __name__ == '__main__':
-    X = np.array([.50, 1.50, 2.00, 4.25, 3.25, 5.50], ndmin=2).reshape((6,1))
-    y = np.array([0, 0, 0, 1, 1, 1])
+    # X = np.array([.50, 1.50, 2.00, 4.25, 3.25, 5.50], ndmin=2).reshape((6,1))
+    # y = np.array([0, 0, 0, 1, 1, 1])
+
+    dataset = load_breast_cancer ()
+    X = dataset.data
+    y = dataset.target
+    print (X.shape)
+
+    X_train, X_test, y_train, y_test = train_test_split (X, y, test_size=0.1)
     
     model = LogisticRegression ()
-    parameters = model.fit (X, y)
+    parameters = model.fit (X_train, y_train)
+    # print (parameters)
 
-    sig, y_pred = model.predict ([[0.75]])
+    sig, y_pred = model.predict (X_test)
     print (f'The predicted outcome is {y_pred} and calculated sigmoid value is {sig}')
+
+    print (f'First value of y_test : {y_test[14]} and first value of y_pred : {y_pred[14]}')
+    print (f'The sigmoid probability for the tested value : {sig[14]}')
